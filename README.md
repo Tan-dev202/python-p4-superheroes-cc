@@ -113,10 +113,10 @@ The API will be available at http://localhost:5555/
 ## Responses
 All successful responses return JSON data with appropriate HTTP Status Codes:
 
-200: Success
-201: Created
-404: Not Found
-400: Bad Request (validation errors)
+- 200: Success
+- 201: Created
+- 404: Not Found
+- 400: Bad Request (validation errors)
 
 Error responses include descriptive messages for easier debugging.
 
