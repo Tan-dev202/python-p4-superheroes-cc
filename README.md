@@ -120,5 +120,11 @@ All successful responses return JSON data with appropriate HTTP Status Codes:
 
 Error responses include descriptive messages for easier debugging.
 
-## Author
+# Support
+For questions or issues, please create an issue in the repository.
+
+# License
+This API was completed as part of a code challenge assessment.
+
+# Author
 Enock Tangus
