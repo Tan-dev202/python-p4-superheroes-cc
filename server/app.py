@@ -95,11 +95,11 @@ def add_hero_power():
         db.session.add(hero_power)
         db.session.commit()
 
-        hero_power_data = hero_power.to_dict(only=('id', 'hero_id', 'power_id', 'strength'))
-        hero_power_data['hero'] = hero_power.hero.to_dict(only=('id', 'name', 'super_name'))
-        hero_power_data['power'] = hero_power.power.to_dict(only=('id', 'name', 'description'))
+        hero_power_details = hero_power.to_dict(only=('id', 'hero_id', 'power_id', 'strength'))
+        hero_power_details['hero'] = hero_power.hero.to_dict(only=('id', 'name', 'super_name'))
+        hero_power_details['power'] = hero_power.power.to_dict(only=('id', 'name', 'description'))
 
-        return jsonify(hero_power_data), 201
+        return jsonify(hero_power_details), 201
 
     except ValueError as exc:
         db.session.rollback()
