@@ -73,10 +73,9 @@ def power_by_id(id):
 @app.route('/hero_powers', methods=['POST'])
 def add_hero_power():
     data = request.get_json()
-    fields = ['strength', 'power_id', 'hero_id']
-    for field in fields:
-        if field not in data:
-            return jsonify({'errors': [f'{field} is required']}), 400
+    strength = data.get("strength")
+    if not strength:
+        return jsonify({'error': ['Strength is required']}), 400
 
     hero = Hero.query.get(data['hero_id'])
     power = Power.query.get(data['power_id'])
