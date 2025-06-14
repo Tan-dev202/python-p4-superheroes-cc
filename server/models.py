@@ -4,7 +4,9 @@ from sqlalchemy.orm import validates
 from sqlalchemy_serializer import SerializerMixin
 
 
-metadata = MetaData()
+metadata = MetaData(naming_convention={
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+})
 
 
 db = SQLAlchemy(metadata=metadata)
@@ -22,6 +24,9 @@ class Hero(db.Model, SerializerMixin):
     hero_powers = db.relationship(
         'HeroPower', back_populates='hero', cascade='all, delete-orphan')
 
+    def __repr__(self):
+        return f'<Hero {self.name} aka {self.super_name}>'
+
 
 class Power(db.Model, SerializerMixin):
     __tablename__ = 'powers'
@@ -34,6 +39,9 @@ class Power(db.Model, SerializerMixin):
 
     hero_powers = db.relationship(
         'HeroPower', back_populates='power', cascade='all, delete-orphan')
+
+    def __repr__(self):
+        return f'<Power {self.name}: {self.description}>'
 
     @validates('description')
     def validate_description(self, key, description):
@@ -55,6 +63,9 @@ class HeroPower(db.Model, SerializerMixin):
 
     hero = db.relationship('Hero', back_populates='hero_powers')
     power = db.relationship('Power', back_populates='hero_powers')
+    
+    def __repr__(self):
+        return f"<HeroPower Hero ID={self.hero_id}, Power ID={self.power_id}, Strength={self.strength}>"
 
     @validates('strength')
     def validate_strength(self, key, strength):
