@@ -57,14 +57,19 @@ def power_by_id(id):
         return jsonify({'error': 'Power not found'}), 404
 
     if request.method == 'GET':
-        return jsonify(power.to_dict(only=('description', 'id', 'name'))), 200
+        return jsonify(power.to_dict(only=('id', 'name', 'description'))), 200
 
     elif request.method == 'PATCH':
         data = request.get_json()
+        
+        if 'description' not in data:
+            return jsonify({'errors': ['Description is required']}), 400
+        
         try:
             power.description = data['description']
             db.session.commit()
             return jsonify(power.to_dict(only=('id', 'name', 'description'))), 200
+        
         except ValueError as exc:
             db.session.rollback()
             return jsonify({'errors': str(exc)}), 400
@@ -73,8 +78,8 @@ def power_by_id(id):
 @app.route('/hero_powers', methods=['POST'])
 def add_hero_power():
     data = request.get_json()
-    strength = data.get("strength")
-    if not strength:
+    
+    if 'strength' not in data:
         return jsonify({'error': ['Strength is required']}), 400
 
     hero = Hero.query.get(data['hero_id'])
@@ -82,6 +87,7 @@ def add_hero_power():
 
     if not hero:
         return jsonify({'error': 'Hero not found'}), 404
+    
     if not power:
         return jsonify({'error': 'Power not found'}), 404
 
