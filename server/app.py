@@ -1,20 +1,34 @@
 #!/usr/bin/env python3
 from flask import Flask, request, jsonify
 from flask_migrate import Migrate
+from flask_mail import Mail, Message
 from models import db, Hero, Power, HeroPower
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///superheroes.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = 'enock.tangus@student.moringaschool.com'
+app.config['MAIL_PASSWORD'] = 'yteo infn izwc sdle'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
 
-
+mail = Mail(app)
 migrate = Migrate(app, db)
 db.init_app(app)
 
 
 @app.route('/')
 def index():
+    msg = Message(
+        subject='Hello from Flask!', 
+        sender='enock.tangus@student.moringaschool.com',
+        recipients=['tanguskipngeno@gmail.com']
+    )
+    msg.body = "Hey, sending you this email from my Flask app, let me know if it works."
+    mail.send(msg)
     return '<h1>Superheroes GET/POST/PATCH API</h1>'
 
 
